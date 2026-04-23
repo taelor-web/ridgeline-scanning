@@ -29,14 +29,16 @@ body{font-family:var(--font-body);color:var(--charcoal);background:var(--cream);
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(245,246,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(126,149,169,0.15);transition:all 0.3s}
 nav.scrolled{background:rgba(42,50,64,0.97);border-bottom-color:transparent}
-nav.scrolled .nav-inner .nav-brand{color:#F5F6F8}
-nav.scrolled .nav-inner .nav-brand span{color:var(--sage)}
 nav.scrolled .nav-inner a:not(.nav-brand){color:rgba(245,246,248,0.75)}
 nav.scrolled .nav-inner a:not(.nav-brand):hover{color:var(--sandstone)}
 nav.scrolled .nav-cta{background:var(--sandstone)!important;color:var(--forest)!important}
 .nav-inner{max-width:1200px;margin:0 auto;padding:16px 40px;display:flex;align-items:center;justify-content:space-between}
-.nav-brand{font-family:var(--font-body);font-weight:500;font-size:18px;letter-spacing:3px;color:var(--forest);text-decoration:none;text-transform:uppercase}
-.nav-brand span{color:var(--sage);font-weight:400;font-size:14px;letter-spacing:4px;display:block;margin-top:-2px}
+.nav-brand{text-decoration:none;display:flex;align-items:center}
+.nav-brand img{height:40px;width:auto;display:block;transition:opacity 0.3s}
+.nav-brand .logo-dark{opacity:1}
+.nav-brand .logo-light{opacity:0;position:absolute}
+nav.scrolled .nav-brand .logo-dark{opacity:0}
+nav.scrolled .nav-brand .logo-light{opacity:1}
 .nav-links{display:flex;align-items:center;gap:32px}
 .nav-links a{text-decoration:none;color:var(--charcoal);font-size:14px;font-weight:400;letter-spacing:0.5px;transition:color 0.2s}
 .nav-links a:hover{color:var(--redrock)}
@@ -188,8 +190,8 @@ section{padding:100px 40px}
 /* FOOTER */
 footer{background:var(--forest);color:rgba(245,246,248,0.5);padding:0 40px 32px}
 .footer-inner{max-width:1200px;margin:0 auto;padding-top:48px;border-top:1px solid rgba(245,246,248,0.08);display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px}
-.footer-brand{font-family:var(--font-body);font-weight:500;font-size:16px;letter-spacing:3px;color:var(--cream);text-transform:uppercase;margin-bottom:12px}
-.footer-brand span{color:var(--sage);font-weight:400;font-size:12px;letter-spacing:4px;display:block;margin-top:2px}
+.footer-brand{margin-bottom:12px}
+.footer-brand img{height:36px;width:auto}
 .footer-desc{font-size:13px;line-height:1.7;margin-top:12px;color:rgba(245,246,248,0.4)}
 footer h4{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--sandstone);margin-bottom:16px;font-weight:500}
 footer ul{list-style:none;display:flex;flex-direction:column;gap:10px}
@@ -232,7 +234,10 @@ footer ul li a:hover{color:var(--sandstone)}
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-brand">Ridgeline<span>Scanning</span></a>
+    <a href="#" class="nav-brand" style="position:relative">
+      <img src="logo-dark.png" alt="Ridgeline Scanning" class="logo-dark">
+      <img src="logo-light.png" alt="Ridgeline Scanning" class="logo-light">
+    </a>
     <div class="nav-links">
       <a href="#services">Services</a>
       <a href="#process">Process</a>
@@ -647,7 +652,7 @@ footer ul li a:hover{color:var(--sandstone)}
 <footer>
   <div class="footer-inner">
     <div>
-      <div class="footer-brand">Ridgeline<span>Scanning</span></div>
+      <div class="footer-brand"><img src="logo-light.png" alt="Ridgeline Scanning"></div>
       <p class="footer-desc">Precision 3D scanning services for the architecture, engineering, and construction industry. Based in Provo, Utah.</p>
     </div>
     <div>
