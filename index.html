@@ -33,10 +33,11 @@ nav.scrolled .nav-inner a:not(.nav-brand){color:rgba(245,246,248,0.75)}
 nav.scrolled .nav-inner a:not(.nav-brand):hover{color:var(--sandstone)}
 nav.scrolled .nav-cta{background:var(--sandstone)!important;color:var(--forest)!important}
 .nav-inner{max-width:1200px;margin:0 auto;padding:12px 40px;display:flex;align-items:center;justify-content:space-between}
-.nav-brand{text-decoration:none;display:flex;align-items:center}
-.nav-brand img{height:44px;width:auto;display:block;transition:opacity 0.3s}
+.nav-brand{text-decoration:none;display:flex;align-items:center;position:relative;height:44px}
+.nav-brand img{height:44px;width:auto;display:block;transition:opacity 0.3s;position:absolute;top:0;left:0}
 .nav-brand .logo-dark{opacity:1}
-.nav-brand .logo-light{opacity:0;position:absolute}
+.nav-brand .logo-light{opacity:0}
+.nav-brand .logo-spacer{height:44px;visibility:hidden}
 nav.scrolled .nav-brand .logo-dark{opacity:0}
 nav.scrolled .nav-brand .logo-light{opacity:1}
 .nav-links{display:flex;align-items:center;gap:32px}
@@ -234,9 +235,10 @@ footer ul li a:hover{color:var(--sandstone)}
 <!-- NAV -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-brand" style="position:relative">
+    <a href="#" class="nav-brand">
       <img src="logo-dark.png" alt="Ridgeline Scanning" class="logo-dark">
       <img src="logo-light.png" alt="Ridgeline Scanning" class="logo-light">
+      <img src="logo-dark.png" alt="" class="logo-spacer" aria-hidden="true">
     </a>
     <div class="nav-links">
       <a href="#services">Services</a>
