@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a Quote — Ridgeline Scanning</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --forest:#2A3240;
+  --sandstone:#C4A97D;
+  --sage:#7E95A9;
+  --redrock:#D4654A;
+  --cream:#F5F6F8;
+  --charcoal:#3A3E47;
+  --light-sage:#C5D1DC;
+  --light-sand:#EDE4D3;
+  --light-blush:#F0D5CC;
+  --warm-gray:#E2E5EA;
+  --mid-gray:#8E939B;
+  --dark-cream:#EAECF0;
+  --font-display:'Libre Baskerville', Georgia, serif;
+  --font-body:'DM Sans', system-ui, sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--charcoal);background:var(--cream);-webkit-font-smoothing:antialiased}
+
+/* NAV */
+nav{background:var(--forest);border-bottom:1px solid rgba(245,246,248,0.08)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:12px 40px;display:flex;align-items:center;justify-content:space-between}
+.nav-brand{text-decoration:none;display:flex;align-items:center;position:relative;height:36px}
+.nav-brand img{height:36px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{text-decoration:none;color:rgba(245,246,248,0.75);font-size:14px;font-weight:400;letter-spacing:0.5px;transition:color 0.2s}
+.nav-links a:hover{color:var(--sandstone)}
+
+/* PAGE HEADER */
+.page-header{background:var(--forest);padding:60px 40px 80px;text-align:center;position:relative}
+.page-header::after{content:'';position:absolute;bottom:-30px;left:50%;transform:translateX(-50%);width:60px;height:60px;background:var(--cream);border-radius:50%;border:4px solid var(--sandstone);display:flex;align-items:center;justify-content:center}
+.page-header h1{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);color:var(--cream);font-weight:400;margin-bottom:12px}
+.page-header h1 em{font-style:italic;color:var(--sandstone)}
+.page-header p{font-size:16px;color:rgba(245,246,248,0.6);max-width:560px;margin:0 auto;line-height:1.7}
+
+/* MAIN CONTENT */
+.quote-page{max-width:1100px;margin:0 auto;padding:60px 40px 80px}
+.quote-layout{display:grid;grid-template-columns:1fr 380px;gap:40px;align-items:start}
+
+/* STEPS INDICATOR */
+.steps-bar{display:flex;gap:0;margin-bottom:40px;background:var(--warm-gray);border-radius:10px;padding:4px;grid-column:1/-1}
+.step-tab{flex:1;padding:12px 16px;text-align:center;border-radius:8px;font-size:13px;font-weight:500;color:var(--mid-gray);cursor:pointer;transition:all 0.3s}
+.step-tab.active{background:#fff;color:var(--forest);box-shadow:0 1px 4px rgba(42,50,64,0.1)}
+.step-tab .step-num{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--warm-gray);color:var(--mid-gray);font-size:11px;font-weight:600;line-height:22px;text-align:center;margin-right:6px;transition:all 0.3s}
+.step-tab.active .step-num{background:var(--sandstone);color:var(--forest)}
+.step-tab.completed .step-num{background:var(--sage);color:#fff}
+
+/* FORM SECTIONS */
+.form-section{display:none}
+.form-section.active{display:block}
+
+/* LEFT COLUMN: FORM */
+.form-column{}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;font-size:13px;font-weight:500;color:var(--forest);margin-bottom:6px}
+.form-group label .required{color:var(--redrock);margin-left:2px}
+.form-input{width:100%;padding:11px 14px;border:1px solid var(--warm-gray);border-radius:8px;font-family:var(--font-body);font-size:14px;color:var(--forest);background:#fff;transition:border-color 0.2s}
+.form-input:focus{outline:none;border-color:var(--sandstone)}
+.form-input::placeholder{color:var(--mid-gray);opacity:0.6}
+textarea.form-input{resize:vertical;min-height:100px}
+select.form-input{appearance:none;background:#fff url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238E939B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 14px center;padding-right:36px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-hint{font-size:11px;color:var(--mid-gray);margin-top:4px}
+
+/* SECTION TITLES */
+.form-section-title{font-family:var(--font-display);font-size:20px;color:var(--forest);margin-bottom:6px}
+.form-section-desc{font-size:13px;color:var(--mid-gray);margin-bottom:24px;line-height:1.6}
+
+/* CALCULATOR (reused from main site) */
+.calc-section-label{font-size:13px;font-weight:500;color:var(--forest);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.calc-step{width:22px;height:22px;border-radius:50%;background:var(--sandstone);color:var(--forest);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+.calc-optional{font-size:11px;font-weight:400;color:var(--mid-gray);background:var(--warm-gray);padding:2px 8px;border-radius:8px}
+.calc-input-row{margin-bottom:4px}
+.calc-input-row label{display:block;font-size:12px;color:var(--mid-gray);margin-bottom:6px}
+.calc-input-wrap{position:relative;display:flex;align-items:center}
+.calc-input-wrap input{width:100%;padding:10px 70px 10px 14px;border:1px solid var(--warm-gray);border-radius:8px;font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--forest);background:#fff;transition:border-color 0.2s;-moz-appearance:textfield}
+.calc-input-wrap input::-webkit-outer-spin-button,.calc-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-input-wrap input:focus{outline:none;border-color:var(--sandstone)}
+.calc-input-unit{position:absolute;right:14px;font-size:13px;color:var(--mid-gray);pointer-events:none}
+.calc-input-hint{font-size:11px;color:var(--mid-gray);margin-top:6px;opacity:0.7}
+.calc-rate-indicator{margin-top:10px;font-size:12px;line-height:1.6;padding:10px 14px;border-radius:8px;transition:all 0.3s}
+.calc-rate-indicator.hourly{background:rgba(126,149,169,0.1);color:var(--forest);border:1px solid rgba(126,149,169,0.15)}
+.calc-rate-indicator.sqft{background:rgba(196,169,125,0.1);color:var(--forest);border:1px solid rgba(196,169,125,0.15)}
+.calc-rate-indicator strong{font-weight:600}
+.calc-radio-group{display:flex;flex-direction:column;gap:8px}
+.calc-radio{display:block;cursor:pointer;position:relative}
+.calc-radio input{position:absolute;opacity:0;pointer-events:none}
+.calc-radio-content{padding:14px 18px;background:#fff;border:1.5px solid var(--warm-gray);border-radius:10px;transition:all 0.2s}
+.calc-radio.active .calc-radio-content,.calc-radio input:checked ~ .calc-radio-content{border-color:var(--sandstone);background:rgba(196,169,125,0.06)}
+.calc-radio-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.calc-radio-name{font-size:14px;font-weight:500;color:var(--forest)}
+.calc-radio-price{font-size:15px;font-weight:600;color:var(--forest)}
+.calc-radio-desc{font-size:12px;color:var(--mid-gray)}
+.calc-radio-badge{display:inline-block;font-size:10px;font-weight:500;color:var(--redrock);background:var(--light-blush);padding:2px 8px;border-radius:8px;margin-top:6px}
+.calc-check-group{display:flex;flex-direction:column;gap:8px}
+.calc-check{display:block;cursor:pointer;position:relative}
+.calc-check input{position:absolute;opacity:0;pointer-events:none}
+.calc-check-content{padding:14px 18px;background:#fff;border:1.5px solid var(--warm-gray);border-radius:10px;transition:all 0.2s}
+.calc-check.checked .calc-check-content,.calc-check input:checked ~ .calc-check-content{border-color:var(--sage);background:rgba(126,149,169,0.05)}
+.calc-check-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.calc-check-name{font-size:14px;font-weight:500;color:var(--forest)}
+.calc-check-price{font-size:14px;font-weight:600;color:var(--forest)}
+.calc-check-desc{font-size:12px;color:var(--mid-gray)}
+.calc-check-hours{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--warm-gray)}
+.calc-check-hours label{font-size:12px;color:var(--mid-gray);white-space:nowrap}
+.calc-check-hours input{width:60px;padding:5px 8px;border:1px solid var(--warm-gray);border-radius:6px;font-family:var(--font-body);font-size:13px;color:var(--forest);text-align:center;-moz-appearance:textfield}
+.calc-check-hours input::-webkit-outer-spin-button,.calc-check-hours input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-check-hours input:focus{outline:none;border-color:var(--sandstone)}
+.calc-divider{margin:24px 0;border:none;border-top:1px solid var(--warm-gray)}
+
+/* RIGHT COLUMN: LIVE SUMMARY */
+.summary-column{position:sticky;top:24px}
+.summary-card{background:#fff;border:1px solid var(--warm-gray);border-radius:12px;overflow:hidden}
+.summary-header{padding:20px 24px;background:var(--forest);color:var(--cream)}
+.summary-header h3{font-family:var(--font-display);font-size:18px;font-weight:400;margin-bottom:2px}
+.summary-header p{font-size:12px;color:rgba(245,246,248,0.5)}
+.summary-body{padding:20px 24px}
+.summary-line{display:flex;justify-content:space-between;font-size:13px;color:var(--charcoal);padding:8px 0;border-bottom:1px solid var(--warm-gray)}
+.summary-line:last-child{border-bottom:none}
+.summary-line.empty{color:var(--mid-gray);font-style:italic;justify-content:center;padding:16px 0}
+.summary-total{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:var(--cream);border-top:2px solid var(--sandstone)}
+.summary-total span:first-child{font-size:14px;font-weight:500;color:var(--forest)}
+.summary-total-amount{font-family:var(--font-display);font-size:28px;color:var(--sandstone)}
+.summary-contact{padding:16px 24px;border-top:1px solid var(--warm-gray);font-size:12px;color:var(--mid-gray);line-height:1.5}
+.summary-contact strong{color:var(--forest);display:block;margin-bottom:2px}
+
+/* NAVIGATION BUTTONS */
+.form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:32px;padding-top:24px;border-top:1px solid var(--warm-gray)}
+.btn-back{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--warm-gray);color:var(--charcoal);padding:12px 24px;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:400;cursor:pointer;transition:all 0.2s}
+.btn-back:hover{border-color:var(--sage);color:var(--forest)}
+.btn-next{display:inline-flex;align-items:center;gap:6px;background:var(--sandstone);color:var(--forest);padding:12px 28px;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:500;border:none;cursor:pointer;transition:all 0.2s}
+.btn-next:hover{background:var(--light-sand);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.btn-submit{display:inline-flex;align-items:center;gap:8px;background:var(--forest);color:var(--cream);padding:14px 32px;border-radius:8px;font-family:var(--font-body);font-size:15px;font-weight:500;border:none;cursor:pointer;transition:all 0.2s;letter-spacing:0.3px}
+.btn-submit:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(42,50,64,0.2)}
+.btn-submit:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* SUCCESS STATE */
+.success-screen{display:none;text-align:center;padding:80px 40px}
+.success-screen.active{display:block}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(126,149,169,0.1);border:2px solid var(--sage);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+.success-screen h2{font-family:var(--font-display);font-size:28px;color:var(--forest);margin-bottom:12px}
+.success-screen p{font-size:16px;color:var(--mid-gray);line-height:1.7;max-width:480px;margin:0 auto 32px}
+.success-screen a{display:inline-flex;align-items:center;gap:6px;color:var(--sandstone);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(196,169,125,0.3)}
+.success-screen a:hover{border-color:var(--sandstone)}
+
+/* FOOTER */
+footer{background:var(--forest);color:rgba(245,246,248,0.5);padding:32px 40px;text-align:center;font-size:12px;margin-top:40px}
+footer a{color:rgba(245,246,248,0.4);text-decoration:none}
+footer a:hover{color:var(--sandstone)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .quote-layout{grid-template-columns:1fr}
+  .summary-column{position:static;order:-1}
+  .form-row{grid-template-columns:1fr}
+  .steps-bar{overflow-x:auto}
+  .step-tab{white-space:nowrap;min-width:0;font-size:12px;padding:10px 12px}
+  .page-header{padding:40px 24px 60px}
+  .quote-page{padding:40px 24px 60px}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <img src="logo-light.png" alt="Ridgeline Scanning">
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#pricing">Pricing</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <h1>Get a <em>quote</em> for your project</h1>
+  <p>Build your estimate, tell us about your project, and we'll reach out to schedule your scan.</p>
+</div>
+
+<!-- MAIN -->
+<div class="quote-page" id="quotePage">
+  <!-- STEPS BAR -->
+  <div class="steps-bar">
+    <div class="step-tab active" data-step="1" onclick="goToStep(1)"><span class="step-num">1</span> Estimate</div>
+    <div class="step-tab" data-step="2" onclick="goToStep(2)"><span class="step-num">2</span> Project details</div>
+    <div class="step-tab" data-step="3" onclick="goToStep(3)"><span class="step-num">3</span> Contact info</div>
+  </div>
+
+  <div class="quote-layout">
+    <!-- LEFT: FORM -->
+    <div class="form-column">
+
+      <!-- STEP 1: CALCULATOR -->
+      <div class="form-section active" id="step1">
+        <h2 class="form-section-title">Build your estimate</h2>
+        <p class="form-section-desc">Select the services you need and we'll calculate your estimated project cost. This helps us prepare an accurate quote.</p>
+
+        <!-- Scanning -->
+        <div class="calc-section-label"><span class="calc-step">1</span> On-site scanning</div>
+        <div class="calc-input-row">
+          <label>Approximate square footage of the space</label>
+          <div class="calc-input-wrap">
+            <input type="number" id="sqftValue" value="5000" min="0" step="500" oninput="calculate()">
+            <span class="calc-input-unit">sq ft</span>
+          </div>
+          <div class="calc-rate-indicator" id="rateIndicator"></div>
+        </div>
+
+        <hr class="calc-divider">
+
+        <!-- Deliverables -->
+        <div class="calc-section-label"><span class="calc-step">2</span> Deliverables</div>
+        <div class="calc-radio-group">
+          <label class="calc-radio active" onclick="setDeliverable('full')">
+            <input type="radio" name="deliverable" value="full" checked>
+            <div class="calc-radio-content">
+              <div class="calc-radio-top">
+                <span class="calc-radio-name">Full package</span>
+                <span class="calc-radio-price">$450</span>
+              </div>
+              <span class="calc-radio-desc">Matterpak + point cloud + 3D walkthrough</span>
+              <span class="calc-radio-badge">Best value</span>
+            </div>
+          </label>
+          <label class="calc-radio" onclick="setDeliverable('pointcloud')">
+            <input type="radio" name="deliverable" value="pointcloud">
+            <div class="calc-radio-content">
+              <div class="calc-radio-top">
+                <span class="calc-radio-name">Point cloud only</span>
+                <span class="calc-radio-price">$300</span>
+              </div>
+              <span class="calc-radio-desc">Registered point cloud for CAD/Revit</span>
+            </div>
+          </label>
+          <label class="calc-radio" onclick="setDeliverable('matterpak')">
+            <input type="radio" name="deliverable" value="matterpak">
+            <div class="calc-radio-content">
+              <div class="calc-radio-top">
+                <span class="calc-radio-name">Matterpak only</span>
+                <span class="calc-radio-price">$200</span>
+              </div>
+              <span class="calc-radio-desc">Floor plans, OBJ files, high-res photos</span>
+            </div>
+          </label>
+          <label class="calc-radio" onclick="setDeliverable('walkthrough')">
+            <input type="radio" name="deliverable" value="walkthrough">
+            <div class="calc-radio-content">
+              <div class="calc-radio-top">
+                <span class="calc-radio-name">3D walkthrough link</span>
+                <span class="calc-radio-price">$100</span>
+              </div>
+              <span class="calc-radio-desc">Shareable 3D tour — includes 3 months of hosting</span>
+            </div>
+          </label>
+        </div>
+
+        <hr class="calc-divider">
+
+        <!-- Add-ons -->
+        <div class="calc-section-label"><span class="calc-step">3</span> Add-ons <span class="calc-optional">Optional</span></div>
+        <div class="calc-check-group">
+          <label class="calc-check" onclick="toggleCheck(this)">
+            <input type="checkbox" id="hosting6" onchange="calculate()">
+            <div class="calc-check-content">
+              <div class="calc-check-top">
+                <span class="calc-check-name">Cloud hosting — 6 months</span>
+                <span class="calc-check-price">$125</span>
+              </div>
+              <span class="calc-check-desc">Shareable 3D model link for your team</span>
+            </div>
+          </label>
+          <label class="calc-check" onclick="toggleCheck(this)">
+            <input type="checkbox" id="hosting12" onchange="calculate()">
+            <div class="calc-check-content">
+              <div class="calc-check-top">
+                <span class="calc-check-name">Cloud hosting — 12 months</span>
+                <span class="calc-check-price">$225</span>
+              </div>
+              <span class="calc-check-desc">Extended hosting for ongoing access</span>
+            </div>
+          </label>
+          <label class="calc-check" onclick="toggleCheck(this)">
+            <input type="checkbox" id="bimCleanup" onchange="calculate()">
+            <div class="calc-check-content">
+              <div class="calc-check-top">
+                <span class="calc-check-name">Point cloud registration &amp; cleanup</span>
+                <span class="calc-check-price">$100/hr</span>
+              </div>
+              <div class="calc-check-hours" onclick="event.stopPropagation()">
+                <label>Estimated hours:</label>
+                <input type="number" id="bimHours" value="2" min="1" max="20" step="1" oninput="calculate()">
+              </div>
+            </div>
+          </label>
+          <label class="calc-check" onclick="toggleCheck(this)">
+            <input type="checkbox" id="revitSetup" onchange="calculate()">
+            <div class="calc-check-content">
+              <div class="calc-check-top">
+                <span class="calc-check-name">Revit project setup</span>
+                <span class="calc-check-price">$500–$800</span>
+              </div>
+              <span class="calc-check-desc">Full Revit-ready project from scan data</span>
+            </div>
+          </label>
+        </div>
+
+        <div class="form-nav">
+          <div></div>
+          <button class="btn-next" onclick="goToStep(2)">Next: Project details <span>&#8594;</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 2: PROJECT DETAILS -->
+      <div class="form-section" id="step2">
+        <h2 class="form-section-title">Tell us about your project</h2>
+        <p class="form-section-desc">Help us understand the scope so we can prepare an accurate quote and schedule efficiently.</p>
+
+        <div class="form-group">
+          <label>Project name or address <span class="required">*</span></label>
+          <input type="text" class="form-input" id="projectName" placeholder="e.g. Office T.I. at 123 Main St, Provo">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Project type <span class="required">*</span></label>
+            <select class="form-input" id="projectType">
+              <option value="">Select type...</option>
+              <option value="Commercial office T.I.">Commercial office T.I.</option>
+              <option value="Retail space">Retail space</option>
+              <option value="Restaurant / hospitality">Restaurant / hospitality</option>
+              <option value="Residential new build">Residential new build</option>
+              <option value="Residential renovation">Residential renovation</option>
+              <option value="Medical / dental">Medical / dental</option>
+              <option value="Industrial / warehouse">Industrial / warehouse</option>
+              <option value="Institutional / education">Institutional / education</option>
+              <option value="Multi-family / apartments">Multi-family / apartments</option>
+              <option value="Exterior / site only">Exterior / site only</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Scan phase <span class="required">*</span></label>
+            <select class="form-input" id="scanPhase">
+              <option value="">Select phase...</option>
+              <option value="Pre-construction (existing conditions)">Pre-construction (existing conditions)</option>
+              <option value="During construction (framing/rough-in)">During construction (framing/rough-in)</option>
+              <option value="Post-construction (as-built/walkthrough)">Post-construction (as-built/walkthrough)</option>
+              <option value="Multiple phases">Multiple phases</option>
+              <option value="Not sure yet">Not sure yet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Preferred scan date</label>
+            <input type="date" class="form-input" id="scanDate">
+          </div>
+          <div class="form-group">
+            <label>Timeline flexibility</label>
+            <select class="form-input" id="timeline">
+              <option value="">Select...</option>
+              <option value="ASAP">ASAP — need it this week</option>
+              <option value="Within 2 weeks">Within 2 weeks</option>
+              <option value="Within a month">Within a month</option>
+              <option value="Flexible / planning ahead">Flexible / planning ahead</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Additional details or special requirements</label>
+          <textarea class="form-input" id="projectNotes" placeholder="Anything we should know — multiple floors, restricted access, specific areas to focus on, etc."></textarea>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goToStep(1)"><span>&#8592;</span> Back</button>
+          <button class="btn-next" onclick="goToStep(3)">Next: Contact info <span>&#8594;</span></button>
+        </div>
+      </div>
+
+      <!-- STEP 3: CONTACT INFO -->
+      <div class="form-section" id="step3">
+        <h2 class="form-section-title">Your contact information</h2>
+        <p class="form-section-desc">We'll use this to send your quote and coordinate the scan appointment.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="contactName" placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label>Company / firm</label>
+            <input type="text" class="form-input" id="contactCompany" placeholder="ABC Architecture">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" class="form-input" id="contactEmail" placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <label>Phone <span class="required">*</span></label>
+            <input type="tel" class="form-input" id="contactPhone" placeholder="(801) 555-0123">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Your role</label>
+          <select class="form-input" id="contactRole">
+            <option value="">Select...</option>
+            <option value="Architect">Architect</option>
+            <option value="Designer">Designer</option>
+            <option value="General contractor">General contractor</option>
+            <option value="Subcontractor">Subcontractor</option>
+            <option value="Project manager">Project manager</option>
+            <option value="Property owner">Property owner</option>
+            <option value="Facility manager">Facility manager</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>How did you hear about us?</label>
+          <select class="form-input" id="referralSource">
+            <option value="">Select...</option>
+            <option value="Knighton Architecture referral">Knighton Architecture</option>
+            <option value="Google search">Google search</option>
+            <option value="Word of mouth">Word of mouth</option>
+            <option value="Social media">Social media</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-nav">
+          <button class="btn-back" onclick="goToStep(2)"><span>&#8592;</span> Back</button>
+          <button class="btn-submit" id="submitBtn" onclick="submitQuote()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            Submit quote request
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: LIVE SUMMARY -->
+    <div class="summary-column">
+      <div class="summary-card">
+        <div class="summary-header">
+          <h3>Quote summary</h3>
+          <p>Updates as you build your estimate</p>
+        </div>
+        <div class="summary-body" id="summaryBody">
+          <div class="summary-line empty">Add services to see your estimate</div>
+        </div>
+        <div class="summary-total">
+          <span>Estimated total</span>
+          <span class="summary-total-amount" id="summaryTotal">$0</span>
+        </div>
+        <div class="summary-contact" id="summaryContact" style="display:none">
+          <strong>Contact</strong>
+          <span id="summaryContactText"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">
+    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--sage)" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <h2>Quote request submitted</h2>
+  <p>Thank you! We've received your project details and estimate. Our team will review everything and reach out within 1 business day to discuss your project and schedule the scan.</p>
+  <a href="index.html">&#8592; Back to Ridgeline Scanning</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2026 Ridgeline Scanning. A division of <a href="https://www.knightonarchitecture.com/">Knighton Architecture</a></p>
+</footer>
+
+<script>
+// ============================================================
+// EMAILJS CONFIGURATION
+// Sign up at https://www.emailjs.com (free: 200 emails/month)
+// Replace these three values with your own from the dashboard:
+// ============================================================
+const EMAILJS_PUBLIC_KEY = 'OxHJzuuOpXIWov-bZ';
+const EMAILJS_SERVICE_ID = 'service_usmg3tz';
+const EMAILJS_TEMPLATE_ID = 'template_icut6xp';
+// ============================================================
+
+// Initialize EmailJS
+emailjs.init(EMAILJS_PUBLIC_KEY);
+
+let deliverable = 'full';
+const SQFT_THRESHOLD = 5000;
+const SQFT_PER_HOUR = 3000;
+
+function setDeliverable(d) {
+  deliverable = d;
+  document.querySelectorAll('.calc-radio').forEach(r => r.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  calculate();
+}
+
+function toggleCheck(el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  if (cb.id === 'hosting6' && !cb.checked) {
+    document.getElementById('hosting12').checked = false;
+    document.querySelector('.calc-check:has(#hosting12)').classList.remove('checked');
+  }
+  if (cb.id === 'hosting12' && !cb.checked) {
+    document.getElementById('hosting6').checked = false;
+    document.querySelector('.calc-check:has(#hosting6)').classList.remove('checked');
+  }
+  setTimeout(() => {
+    el.classList.toggle('checked', cb.checked);
+    calculate();
+  }, 10);
+}
+
+function calculate() {
+  const sqft = parseInt(document.getElementById('sqftValue').value) || 0;
+  const indicator = document.getElementById('rateIndicator');
+  let lines = [];
+  let total = 0;
+
+  if (sqft === 0) {
+    indicator.className = 'calc-rate-indicator';
+    indicator.innerHTML = '';
+  } else if (sqft < SQFT_THRESHOLD) {
+    const hours = Math.max(1, Math.ceil(sqft / SQFT_PER_HOUR));
+    const scanCost = Math.max(hours * 200, 200);
+    lines.push({ label: `On-site scanning (${hours} hr × $200/hr)`, cost: scanCost });
+    total += scanCost;
+    indicator.className = 'calc-rate-indicator hourly';
+    indicator.innerHTML = `<strong>Hourly rate applies</strong> — Spaces under ${SQFT_THRESHOLD.toLocaleString()} sq ft are charged at <strong>$200/hr</strong>. Estimated ~${hours} hour${hours > 1 ? 's' : ''} of scanning.`;
+  } else {
+    const scanCost = Math.max(sqft * 0.12, 750);
+    lines.push({ label: `On-site scanning (${sqft.toLocaleString()} sq ft × $0.12)`, cost: scanCost });
+    total += scanCost;
+    indicator.className = 'calc-rate-indicator sqft';
+    indicator.innerHTML = `<strong>Square footage rate applies</strong> — Spaces ${SQFT_THRESHOLD.toLocaleString()} sq ft and above are charged at <strong>$0.12/sq ft</strong>.`;
+  }
+
+  const deliverablePrices = { full: 450, matterpak: 200, pointcloud: 300, walkthrough: 100 };
+  const deliverableNames = { full: 'Full package', matterpak: 'Matterpak only', pointcloud: 'Point cloud only', walkthrough: '3D walkthrough link' };
+  lines.push({ label: deliverableNames[deliverable], cost: deliverablePrices[deliverable] });
+  total += deliverablePrices[deliverable];
+
+  if (document.getElementById('hosting6').checked) { lines.push({ label: 'Cloud hosting — 6 months', cost: 125 }); total += 125; }
+  if (document.getElementById('hosting12').checked) { lines.push({ label: 'Cloud hosting — 12 months', cost: 225 }); total += 225; }
+  if (document.getElementById('bimCleanup').checked) {
+    const bimHrs = parseInt(document.getElementById('bimHours').value) || 0;
+    lines.push({ label: `Point cloud cleanup (${bimHrs} hr × $100)`, cost: bimHrs * 100 });
+    total += bimHrs * 100;
+  }
+  if (document.getElementById('revitSetup').checked) { lines.push({ label: 'Revit project setup', cost: 650, display: '$500–$800' }); total += 650; }
+
+  // Update summary card
+  const body = document.getElementById('summaryBody');
+  if (lines.length === 0) {
+    body.innerHTML = '<div class="summary-line empty">Add services to see your estimate</div>';
+  } else {
+    body.innerHTML = lines.map(l => `<div class="summary-line"><span>${l.label}</span><span>${l.display || '$' + l.cost.toLocaleString()}</span></div>`).join('');
+  }
+  document.getElementById('summaryTotal').textContent = '$' + total.toLocaleString();
+
+  // Store for submission
+  window._quoteLines = lines;
+  window._quoteTotal = total;
+}
+
+// STEP NAVIGATION
+function goToStep(n) {
+  document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.querySelectorAll('.step-tab').forEach(t => {
+    const stepNum = parseInt(t.dataset.step);
+    t.classList.remove('active', 'completed');
+    if (stepNum === n) t.classList.add('active');
+    if (stepNum < n) t.classList.add('completed');
+  });
+  updateSummaryContact();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateSummaryContact() {
+  const name = document.getElementById('contactName')?.value;
+  const email = document.getElementById('contactEmail')?.value;
+  const company = document.getElementById('contactCompany')?.value;
+  const contactDiv = document.getElementById('summaryContact');
+  const contactText = document.getElementById('summaryContactText');
+  if (name || email) {
+    contactDiv.style.display = 'block';
+    let text = '';
+    if (name) text += name;
+    if (company) text += ' — ' + company;
+    if (email) text += '<br>' + email;
+    contactText.innerHTML = text;
+  } else {
+    contactDiv.style.display = 'none';
+  }
+}
+
+// SUBMIT
+function submitQuote() {
+  // Validate required fields
+  const name = document.getElementById('contactName').value.trim();
+  const email = document.getElementById('contactEmail').value.trim();
+  const phone = document.getElementById('contactPhone').value.trim();
+  const projectName = document.getElementById('projectName').value.trim();
+  const projectType = document.getElementById('projectType').value;
+  const scanPhase = document.getElementById('scanPhase').value;
+
+  if (!name || !email || !phone || !projectName || !projectType || !scanPhase) {
+    alert('Please fill in all required fields (marked with *) before submitting.');
+    return;
+  }
+
+  const company = document.getElementById('contactCompany').value.trim();
+  const role = document.getElementById('contactRole').value;
+  const scanDate = document.getElementById('scanDate').value;
+  const timeline = document.getElementById('timeline').value;
+  const notes = document.getElementById('projectNotes').value.trim();
+  const referral = document.getElementById('referralSource').value;
+  const sqft = document.getElementById('sqftValue').value;
+
+  // Build the email body
+  let body = `RIDGELINE SCANNING — QUOTE REQUEST\n`;
+  body += `${'='.repeat(45)}\n\n`;
+  body += `CONTACT INFORMATION\n`;
+  body += `${'-'.repeat(30)}\n`;
+  body += `Name: ${name}\n`;
+  if (company) body += `Company: ${company}\n`;
+  body += `Email: ${email}\n`;
+  body += `Phone: ${phone}\n`;
+  if (role) body += `Role: ${role}\n`;
+  if (referral) body += `Referral: ${referral}\n`;
+  body += `\n`;
+  body += `PROJECT DETAILS\n`;
+  body += `${'-'.repeat(30)}\n`;
+  body += `Project: ${projectName}\n`;
+  body += `Type: ${projectType}\n`;
+  body += `Phase: ${scanPhase}\n`;
+  body += `Square footage: ${parseInt(sqft).toLocaleString()} sq ft\n`;
+  if (scanDate) body += `Preferred date: ${scanDate}\n`;
+  if (timeline) body += `Timeline: ${timeline}\n`;
+  if (notes) body += `Notes: ${notes}\n`;
+  body += `\n`;
+  body += `ESTIMATED COST BREAKDOWN\n`;
+  body += `${'-'.repeat(30)}\n`;
+  (window._quoteLines || []).forEach(l => {
+    body += `${l.label}: ${l.display || '$' + l.cost.toLocaleString()}\n`;
+  });
+  body += `${'-'.repeat(30)}\n`;
+  body += `ESTIMATED TOTAL: $${(window._quoteTotal || 0).toLocaleString()}\n`;
+  body += `\n`;
+  body += `Note: This is a client-generated estimate.\n`;
+  body += `Final pricing may vary based on site conditions.\n`;
+
+  const subject = `Quote Request — ${projectName} (${parseInt(sqft).toLocaleString()} sq ft)`;
+
+  // Disable submit button and show sending state
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="10" stroke-dasharray="30 70"/></svg> Sending...';
+
+  // Send via EmailJS
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+    subject: subject,
+    body: body,
+    from_name: name,
+    from_email: email,
+    reply_to: email,
+  }).then(() => {
+    // Success
+    document.getElementById('quotePage').style.display = 'none';
+    document.getElementById('successScreen').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }).catch((error) => {
+    // Error — fall back to mailto
+    console.error('EmailJS error:', error);
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg> Submit quote request';
+
+    const useFallback = confirm('Automatic sending failed. Would you like to send via your email app instead?');
+    if (useFallback) {
+      window.location.href = `mailto:info@ridgelinescanning.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      setTimeout(() => {
+        document.getElementById('quotePage').style.display = 'none';
+        document.getElementById('successScreen').classList.add('active');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 500);
+    }
+  });
+}
+
+// Init
+calculate();
+
+// Update contact summary when fields change
+document.addEventListener('input', (e) => {
+  if (['contactName', 'contactEmail', 'contactCompany'].includes(e.target.id)) {
+    updateSummaryContact();
+  }
+});
+</script>
+</body>
+</html>
