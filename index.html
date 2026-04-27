@@ -156,20 +156,97 @@ section{padding:100px 40px}
 .step p{font-size:13px;color:var(--mid-gray);line-height:1.6}
 
 /* PRICING */
-.pricing{background:#fff}
-.pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:56px}
-.price-card{background:var(--cream);border:1px solid rgba(126,149,169,0.12);border-radius:12px;padding:36px;transition:all 0.3s}
-.price-card:hover{border-color:rgba(126,149,169,0.3);box-shadow:0 8px 32px rgba(42,50,64,0.06)}
-.price-card.featured{border-color:var(--sandstone);position:relative}
-.price-card.featured::after{content:'Best value';position:absolute;top:-12px;right:24px;background:var(--redrock);color:#fff;font-size:11px;font-weight:500;padding:4px 14px;border-radius:20px;letter-spacing:0.5px}
-.price-header{margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--warm-gray)}
-.price-header h3{font-family:var(--font-display);font-size:22px;color:var(--forest);margin-bottom:6px}
-.price-header .price{font-size:14px;color:var(--mid-gray)}
-.price-header .price strong{font-size:28px;color:var(--forest);font-weight:600}
-.price-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-.price-list li{font-size:14px;color:var(--charcoal);padding-left:24px;position:relative;line-height:1.5}
-.price-list li::before{content:'';position:absolute;left:0;top:6px;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--sage)}
-.price-list li.check::before{background:var(--sage);border-color:var(--sage)}
+.pricing{background:#fff;overflow:visible}
+.pricing-layout{display:grid;grid-template-columns:280px 1fr;gap:40px;margin-top:48px;align-items:start;overflow:visible}
+.pricing-overview{position:sticky;top:100px;display:flex;flex-direction:column;gap:16px}
+.overview-item{display:flex;gap:14px;align-items:flex-start;padding:16px;background:var(--cream);border-radius:10px;border:1px solid var(--warm-gray)}
+.overview-num{width:28px;height:28px;border-radius:50%;background:var(--sandstone);color:var(--forest);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.overview-item h4{font-size:14px;color:var(--forest);font-weight:500;margin-bottom:2px}
+.overview-item p{font-size:12px;color:var(--mid-gray);line-height:1.5}
+
+/* CALCULATOR */
+.calc-container{background:var(--cream);border:1px solid var(--warm-gray);border-radius:16px;position:relative}
+.calc-header{padding:28px 32px 20px;border-bottom:1px solid var(--warm-gray);border-radius:16px 16px 0 0;background:var(--cream)}
+.calc-header h3{font-family:var(--font-display);font-size:22px;color:var(--forest);margin-bottom:4px}
+.calc-header p{font-size:13px;color:var(--mid-gray)}
+.calc-section{padding:24px 32px;border-bottom:1px solid var(--warm-gray);position:relative;overflow:visible}
+.calc-section-label{font-size:13px;font-weight:500;color:var(--forest);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.calc-step{width:22px;height:22px;border-radius:50%;background:var(--sandstone);color:var(--forest);font-size:11px;font-weight:600;display:inline-flex;align-items:center;justify-content:center}
+.calc-optional{font-size:11px;font-weight:400;color:var(--mid-gray);background:var(--warm-gray);padding:2px 8px;border-radius:8px}
+
+/* Toggle buttons — removed, auto-calculated now */
+
+/* Rate indicator */
+.calc-rate-indicator{margin-top:10px;font-size:12px;line-height:1.6;padding:10px 14px;border-radius:8px;transition:all 0.3s}
+.calc-rate-indicator.hourly{background:rgba(126,149,169,0.1);color:var(--forest);border:1px solid rgba(126,149,169,0.15)}
+.calc-rate-indicator.sqft{background:rgba(196,169,125,0.1);color:var(--forest);border:1px solid rgba(196,169,125,0.15)}
+.calc-rate-indicator strong{font-weight:600}
+
+/* Input rows */
+.calc-input-row{margin-bottom:4px}
+.calc-input-row label{display:block;font-size:12px;color:var(--mid-gray);margin-bottom:6px}
+.calc-input-wrap{position:relative;display:flex;align-items:center}
+.calc-input-wrap input{width:100%;padding:10px 70px 10px 14px;border:1px solid var(--warm-gray);border-radius:8px;font-family:var(--font-body);font-size:16px;font-weight:500;color:var(--forest);background:#fff;transition:border-color 0.2s;-moz-appearance:textfield}
+.calc-input-wrap input::-webkit-outer-spin-button,.calc-input-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-input-wrap input:focus{outline:none;border-color:var(--sandstone)}
+.calc-input-unit{position:absolute;right:14px;font-size:13px;color:var(--mid-gray);pointer-events:none}
+.calc-input-hint{font-size:11px;color:var(--mid-gray);margin-top:6px;opacity:0.7}
+
+/* Radio options (deliverables) */
+.calc-radio-group{display:flex;flex-direction:column;gap:8px}
+.calc-radio{display:block;cursor:pointer;position:relative}
+.calc-radio input{position:absolute;opacity:0;pointer-events:none}
+.calc-radio.active .calc-radio-content,.calc-radio input:checked ~ .calc-radio-content{border-color:var(--sandstone);background:rgba(196,169,125,0.06)}
+.calc-radio-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.calc-radio-name{font-size:14px;font-weight:500;color:var(--forest)}
+.calc-radio-price{font-size:15px;font-weight:600;color:var(--forest)}
+.calc-radio-desc{font-size:12px;color:var(--mid-gray)}
+.calc-radio-badge{display:inline-block;font-size:10px;font-weight:500;color:var(--redrock);background:var(--light-blush);padding:2px 8px;border-radius:8px;margin-top:6px}
+
+/* Tooltips */
+.calc-tooltip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;cursor:help;flex-shrink:0}
+.calc-tooltip svg{opacity:0.35;transition:opacity 0.2s}
+.calc-tooltip:hover svg{opacity:0.7}
+.calc-tooltip .tooltip-box{position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%);width:240px;background:var(--forest);color:rgba(245,246,248,0.9);font-size:12px;line-height:1.6;padding:12px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(42,50,64,0.25);pointer-events:none;opacity:0;visibility:hidden;transition:all 0.2s;z-index:10;font-weight:400}
+.calc-tooltip .tooltip-box::after{content:'';position:absolute;top:50%;right:-11px;transform:translateY(-50%);border:6px solid transparent;border-left-color:var(--forest)}
+.calc-tooltip:hover .tooltip-box{opacity:1;visibility:visible}
+.calc-check-tooltip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;cursor:help;flex-shrink:0}
+.calc-check-tooltip svg{opacity:0.35;transition:opacity 0.2s}
+.calc-check-tooltip:hover svg{opacity:0.7}
+.calc-check-tooltip .tooltip-box{position:absolute;top:50%;right:calc(100% + 12px);transform:translateY(-50%);width:240px;background:var(--forest);color:rgba(245,246,248,0.9);font-size:12px;line-height:1.6;padding:12px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(42,50,64,0.25);pointer-events:none;opacity:0;visibility:hidden;transition:all 0.2s;z-index:10;font-weight:400}
+.calc-check-tooltip .tooltip-box::after{content:'';position:absolute;top:50%;right:-11px;transform:translateY(-50%);border:6px solid transparent;border-left-color:var(--forest)}
+.calc-check-tooltip:hover .tooltip-box{opacity:1;visibility:visible}
+
+/* Radio and check content layout with left-side icon */
+.calc-radio-content{padding:14px 18px;background:#fff;border:1.5px solid var(--warm-gray);border-radius:10px;transition:all 0.2s;display:flex;align-items:center;gap:14px}
+.calc-radio-inner{flex:1;min-width:0}
+.calc-check-content{padding:14px 18px;background:#fff;border:1.5px solid var(--warm-gray);border-radius:10px;transition:all 0.2s;display:flex;align-items:center;gap:14px}
+.calc-check-inner{flex:1;min-width:0}
+
+/* Checkbox options (add-ons) */
+.calc-check-group{display:flex;flex-direction:column;gap:8px}
+.calc-check{display:block;cursor:pointer;position:relative}
+.calc-check input{position:absolute;opacity:0;pointer-events:none}
+.calc-check.checked .calc-check-content,.calc-check input:checked ~ .calc-check-content{border-color:var(--sage);background:rgba(126,149,169,0.05)}
+.calc-check-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+.calc-check-name{font-size:14px;font-weight:500;color:var(--forest)}
+.calc-check-price{font-size:14px;font-weight:600;color:var(--forest)}
+.calc-check-desc{font-size:12px;color:var(--mid-gray)}
+.calc-check-hours{display:flex;align-items:center;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid var(--warm-gray)}
+.calc-check-hours label{font-size:12px;color:var(--mid-gray);white-space:nowrap}
+.calc-check-hours input{width:60px;padding:5px 8px;border:1px solid var(--warm-gray);border-radius:6px;font-family:var(--font-body);font-size:13px;color:var(--forest);text-align:center;-moz-appearance:textfield}
+.calc-check-hours input::-webkit-outer-spin-button,.calc-check-hours input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.calc-check-hours input:focus{outline:none;border-color:var(--sandstone)}
+
+/* Total section */
+.calc-total{padding:24px 32px 28px;background:var(--forest);border-radius:0 0 16px 16px}
+.calc-total-breakdown{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.calc-total-breakdown .calc-line{display:flex;justify-content:space-between;font-size:13px;color:rgba(245,246,248,0.5);padding:3px 0}
+.calc-total-line{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid rgba(245,246,248,0.15)}
+.calc-total-line span:first-child{font-size:14px;color:rgba(245,246,248,0.7);font-weight:500}
+.calc-total-amount{font-family:var(--font-display);font-size:32px;color:var(--sandstone);font-weight:400}
+.calc-total-note{font-size:11px;color:rgba(245,246,248,0.35);margin-top:8px;line-height:1.5}
+.calc-cta{margin-top:20px;width:100%;justify-content:center;text-align:center}
 
 /* EQUIPMENT */
 .equipment{background:var(--cream)}
@@ -215,6 +292,15 @@ footer ul li a:hover{color:var(--sandstone)}
   .process-steps{grid-template-columns:repeat(2,1fr);gap:40px}
   .process-steps::before{display:none}
   .pricing-grid{grid-template-columns:1fr}
+  .pricing-layout{grid-template-columns:1fr}
+  .pricing-overview{position:static;flex-direction:row;overflow-x:auto;gap:12px;padding-bottom:4px}
+  .overview-item{min-width:220px;flex-shrink:0}
+  .calc-section{padding:20px 20px}
+  .calc-header{padding:24px 20px 16px}
+  .calc-total{padding:20px 20px 24px}
+  .tier-options,.tier-options.three-col,.tier-options.two-col{grid-template-columns:1fr}
+  .tier-option-divider{padding:4px 0}
+  .tier-content{padding:24px 20px 28px}
   .equip-grid{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr 1fr;gap:32px}
   .nav-links{display:none}
@@ -434,58 +520,223 @@ footer ul li a:hover{color:var(--sandstone)}
 <section class="pricing" id="pricing">
   <div class="section-inner">
     <div class="section-label">Pricing</div>
-    <div class="section-title">Transparent pricing, no surprises</div>
-    <div class="section-subtitle">Straightforward rates based on your project scope. Custom quotes available for large or complex sites.</div>
-    <div class="pricing-grid">
-      <div class="price-card">
-        <div class="price-header">
-          <h3>On-site scanning</h3>
-          <div class="price"><strong>$200</strong> / hour &nbsp;or&nbsp; <strong>$0.12</strong> / sq ft</div>
+    <div class="section-title">Estimate your project cost</div>
+    <div class="section-subtitle">Enter your project details below and see your estimated cost instantly. Scanning is priced by the hour for smaller spaces and by square footage for larger ones.</div>
+
+    <div class="pricing-layout">
+      <!-- BRIEF OVERVIEW -->
+      <div class="pricing-overview">
+        <div class="overview-item">
+          <div class="overview-num">1</div>
+          <div>
+            <h4>On-site scanning</h4>
+            <p>Priced by the hour for spaces under 5,000 sq ft, and by square footage for larger spaces</p>
+          </div>
         </div>
-        <ul class="price-list">
-          <li class="check">$200 per hour with $200 minimum per visit</li>
-          <li class="check">$0.12 per sq ft with $750 minimum</li>
-          <li class="check">Matterport 3D capture included</li>
-          <li class="check">Drone / exterior scanning available</li>
-          <li>Travel beyond local area billed separately</li>
-        </ul>
+        <div class="overview-item">
+          <div class="overview-num">2</div>
+          <div>
+            <h4>Processing &amp; deliverables</h4>
+            <p>Matterpak, point cloud, or both — choose what your team needs</p>
+          </div>
+        </div>
+        <div class="overview-item">
+          <div class="overview-num">3</div>
+          <div>
+            <h4>Optional add-ons</h4>
+            <p>Cloud hosting, BIM/Revit integration — add if needed</p>
+          </div>
+        </div>
       </div>
-      <div class="price-card featured">
-        <div class="price-header">
-          <h3>Processing &amp; deliverables</h3>
-          <div class="price"><strong>$450</strong> / full package</div>
+
+      <!-- CALCULATOR -->
+      <div class="calc-container" id="pricingCalc">
+        <div class="calc-header">
+          <h3>Project calculator</h3>
+          <p>Adjust the options to estimate your project cost</p>
         </div>
-        <ul class="price-list">
-          <li class="check">Full package: Matterpak + point cloud — $450/scan</li>
-          <li class="check">Matterpak creation only — $200</li>
-          <li class="check">Point cloud export only — $300</li>
-          <li class="check">Shareable 3D walkthrough link</li>
-          <li class="check">Download-ready files for your team</li>
-        </ul>
-      </div>
-      <div class="price-card">
-        <div class="price-header">
-          <h3>Cloud hosting &amp; storage</h3>
-          <div class="price"><strong>$125</strong> / 6 months &nbsp;or&nbsp; <strong>$225</strong> / 12 months</div>
+
+        <!-- SCANNING -->
+        <div class="calc-section">
+          <div class="calc-section-label">
+            <span class="calc-step">1</span>
+            On-site scanning
+          </div>
+
+          <div class="calc-input-row">
+            <label>Approximate square footage of the space</label>
+            <div class="calc-input-wrap">
+              <input type="number" id="sqftValue" value="5000" min="0" step="500" oninput="calculate()">
+              <span class="calc-input-unit">sq ft</span>
+            </div>
+            <div class="calc-rate-indicator" id="rateIndicator"></div>
+          </div>
         </div>
-        <ul class="price-list">
-          <li class="check">6-month hosting term — $125 per model</li>
-          <li class="check">12-month hosting term — $225 per model</li>
-          <li class="check">Shareable link access for your whole team</li>
-          <li>Pricing reviewed periodically for software costs</li>
-        </ul>
-      </div>
-      <div class="price-card">
-        <div class="price-header">
-          <h3>BIM / Revit integration</h3>
-          <div class="price"><strong>$100</strong> / hour + project setup</div>
+
+        <!-- DELIVERABLES -->
+        <div class="calc-section">
+          <div class="calc-section-label">
+            <span class="calc-step">2</span>
+            Deliverables
+          </div>
+
+          <div class="calc-radio-group">
+            <label class="calc-radio active" onclick="setDeliverable('full')">
+              <input type="radio" name="deliverable" value="full" checked>
+              <div class="calc-radio-content">
+                <span class="calc-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">Everything in one deliverable: a downloadable Matterpak (floor plans, OBJ files, high-res photos), a registered point cloud ready for CAD/Revit, and a shareable 3D walkthrough link. Saves $150 compared to purchasing individually.</span>
+                </span>
+                <div class="calc-radio-inner">
+                  <div class="calc-radio-top">
+                    <span class="calc-radio-name">Full package</span>
+                    <span class="calc-radio-price">$450</span>
+                  </div>
+                  <span class="calc-radio-desc">Matterpak + point cloud + 3D walkthrough</span>
+                  <span class="calc-radio-badge">Best value</span>
+                </div>
+              </div>
+            </label>
+            <label class="calc-radio" onclick="setDeliverable('pointcloud')">
+              <input type="radio" name="deliverable" value="pointcloud">
+              <div class="calc-radio-content">
+                <span class="calc-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">A registered and cleaned point cloud exported in standard formats (E57, LAS, PLY). Ready to import directly into Revit, AutoCAD, or other BIM/CAD software for modeling and coordination.</span>
+                </span>
+                <div class="calc-radio-inner">
+                  <div class="calc-radio-top">
+                    <span class="calc-radio-name">Point cloud only</span>
+                    <span class="calc-radio-price">$300</span>
+                  </div>
+                  <span class="calc-radio-desc">Registered point cloud for CAD/Revit</span>
+                </div>
+              </div>
+            </label>
+            <label class="calc-radio" onclick="setDeliverable('matterpak')">
+              <input type="radio" name="deliverable" value="matterpak">
+              <div class="calc-radio-content">
+                <span class="calc-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">A downloadable bundle from Matterport containing schematic floor plans, a textured OBJ 3D mesh, high-resolution photos of each scan position, and a point cloud (XYZ). Great for design reference and documentation.</span>
+                </span>
+                <div class="calc-radio-inner">
+                  <div class="calc-radio-top">
+                    <span class="calc-radio-name">Matterpak only</span>
+                    <span class="calc-radio-price">$200</span>
+                  </div>
+                  <span class="calc-radio-desc">Floor plans, OBJ files, high-res photos</span>
+                </div>
+              </div>
+            </label>
+            <label class="calc-radio" onclick="setDeliverable('walkthrough')">
+              <input type="radio" name="deliverable" value="walkthrough">
+              <div class="calc-radio-content">
+                <span class="calc-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">A shareable web link to an interactive 3D model of your space. Anyone with the link can navigate the space, take measurements, and view from any angle. Includes 3 months of hosting — extend with a hosting add-on if needed.</span>
+                </span>
+                <div class="calc-radio-inner">
+                  <div class="calc-radio-top">
+                    <span class="calc-radio-name">3D walkthrough link</span>
+                    <span class="calc-radio-price">$100</span>
+                  </div>
+                  <span class="calc-radio-desc">Shareable link to an interactive 3D tour of your space — includes 3 months of hosting</span>
+                </div>
+              </div>
+            </label>
+          </div>
         </div>
-        <ul class="price-list">
-          <li class="check">Point cloud registration &amp; cleanup — $100/hr</li>
-          <li class="check">Revit project setup — $500–$800</li>
-          <li class="check">Scan-to-BIM coordination</li>
-          <li class="check">Revit-ready deliverables for your design team</li>
-        </ul>
+
+        <!-- ADD-ONS -->
+        <div class="calc-section">
+          <div class="calc-section-label">
+            <span class="calc-step">3</span>
+            Add-ons <span class="calc-optional">Optional</span>
+          </div>
+
+          <div class="calc-check-group">
+            <label class="calc-check" onclick="toggleCheck(this)">
+              <input type="checkbox" id="hosting6" onchange="calculate()">
+              <div class="calc-check-content">
+                <span class="calc-check-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">Keep your 3D model accessible online for 6 months. Your team and clients can access the walkthrough via a shareable link anytime during the term.</span>
+                </span>
+                <div class="calc-check-inner">
+                  <div class="calc-check-top">
+                    <span class="calc-check-name">Cloud hosting — 6 months</span>
+                    <span class="calc-check-price">$125</span>
+                  </div>
+                  <span class="calc-check-desc">Shareable 3D model link for your team</span>
+                </div>
+              </div>
+            </label>
+            <label class="calc-check" onclick="toggleCheck(this)">
+              <input type="checkbox" id="hosting12" onchange="calculate()">
+              <div class="calc-check-content">
+                <span class="calc-check-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">Extended 12-month hosting for projects that need long-term access. Ideal for ongoing facility management, multi-phase construction, or client reference throughout a full project lifecycle.</span>
+                </span>
+                <div class="calc-check-inner">
+                  <div class="calc-check-top">
+                    <span class="calc-check-name">Cloud hosting — 12 months</span>
+                    <span class="calc-check-price">$225</span>
+                  </div>
+                  <span class="calc-check-desc">Extended hosting for ongoing access</span>
+                </div>
+              </div>
+            </label>
+            <label class="calc-check" onclick="toggleCheck(this)">
+              <input type="checkbox" id="bimCleanup" onchange="calculate()">
+              <div class="calc-check-content">
+                <span class="calc-check-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">We align and merge multiple scan positions into a single clean point cloud, removing noise and artifacts. This step is needed before Revit import if your project has multiple scan areas or floors.</span>
+                </span>
+                <div class="calc-check-inner">
+                  <div class="calc-check-top">
+                    <span class="calc-check-name">Point cloud registration &amp; cleanup</span>
+                    <span class="calc-check-price">$100/hr</span>
+                  </div>
+                  <div class="calc-check-hours" onclick="event.stopPropagation()">
+                    <label>Estimated hours:</label>
+                    <input type="number" id="bimHours" value="2" min="1" max="20" step="1" oninput="calculate()">
+                  </div>
+                </div>
+              </div>
+            </label>
+            <label class="calc-check" onclick="toggleCheck(this)">
+              <input type="checkbox" id="revitSetup" onchange="calculate()">
+              <div class="calc-check-content">
+                <span class="calc-check-tooltip" onclick="event.preventDefault();event.stopPropagation()">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                  <span class="tooltip-box">We set up a Revit project file with your registered point cloud properly linked, coordinated, and ready for your design team to start modeling. Pricing varies by project complexity ($500 for straightforward, up to $800 for complex multi-level spaces).</span>
+                </span>
+                <div class="calc-check-inner">
+                  <div class="calc-check-top">
+                    <span class="calc-check-name">Revit project setup</span>
+                    <span class="calc-check-price">$500–$800</span>
+                  </div>
+                  <span class="calc-check-desc">Full Revit-ready project from scan data</span>
+                </div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- TOTAL -->
+        <div class="calc-total">
+          <div class="calc-total-breakdown" id="calcBreakdown"></div>
+          <div class="calc-total-line">
+            <span>Estimated total</span>
+            <span class="calc-total-amount" id="calcTotal">$0</span>
+          </div>
+          <div class="calc-total-note">This is an estimate. Final pricing may vary for large, complex, or multi-phase projects.</div>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScexsN7-UmtR26hBZ1TkyBowGOB9W1qAj59_DnSf9G0Ew9wzw/viewform?usp=publish-editor" target="_blank" class="btn-primary calc-cta">Get a quote for this project <span>&#8594;</span></a>
+        </div>
       </div>
     </div>
   </div>
@@ -495,7 +746,7 @@ footer ul li a:hover{color:var(--sandstone)}
 <section class="equipment" id="equipment">
   <div class="section-inner">
     <div class="section-label">Our tools</div>
-    <div class="section-title">Professional-grade equipment, expert operators</div>
+    <div class="section-title">Professional-grade equipment</div>
     <div class="section-subtitle">We bring the right tools for every project — backed by an architecture firm's understanding of what you actually need from the data.</div>
     <div class="equip-grid">
       <div class="equip-item">
@@ -606,6 +857,102 @@ window.addEventListener('scroll',()=>{
   const nav=document.getElementById('nav');
   nav.classList.toggle('scrolled',window.scrollY>80);
 });
+
+// Pricing Calculator
+let deliverable = 'full';
+const SQFT_THRESHOLD = 5000;
+const HOURLY_RATE = 200;
+const HOURLY_MIN = 200;
+const SQFT_RATE = 0.12;
+const SQFT_MIN = 750;
+const SQFT_PER_HOUR = 3000;
+
+function setDeliverable(d) {
+  deliverable = d;
+  document.querySelectorAll('.calc-radio').forEach(r => r.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  calculate();
+}
+
+function toggleCheck(el) {
+  const cb = el.querySelector('input[type="checkbox"]');
+  if (cb.id === 'hosting6' && !cb.checked) {
+    document.getElementById('hosting12').checked = false;
+    document.querySelector('.calc-check:has(#hosting12)').classList.remove('checked');
+  }
+  if (cb.id === 'hosting12' && !cb.checked) {
+    document.getElementById('hosting6').checked = false;
+    document.querySelector('.calc-check:has(#hosting6)').classList.remove('checked');
+  }
+  setTimeout(() => {
+    el.classList.toggle('checked', cb.checked);
+    calculate();
+  }, 10);
+}
+
+function calculate() {
+  const sqft = parseInt(document.getElementById('sqftValue').value) || 0;
+  const indicator = document.getElementById('rateIndicator');
+  let lines = [];
+  let total = 0;
+  let scanCost = 0;
+
+  if (sqft === 0) {
+    indicator.className = 'calc-rate-indicator';
+    indicator.innerHTML = '';
+  } else if (sqft < SQFT_THRESHOLD) {
+    // Hourly pricing
+    const hours = Math.max(1, Math.ceil(sqft / SQFT_PER_HOUR));
+    scanCost = Math.max(hours * HOURLY_RATE, HOURLY_MIN);
+    lines.push({ label: `On-site scanning (${hours} hr × $200/hr)`, cost: scanCost });
+    indicator.className = 'calc-rate-indicator hourly';
+    indicator.innerHTML = `<strong>Hourly rate applies</strong> — Spaces under ${SQFT_THRESHOLD.toLocaleString()} sq ft are charged at <strong>$200/hr</strong>. Your space is estimated at ~${hours} hour${hours > 1 ? 's' : ''} of scanning time.`;
+  } else {
+    // Square footage pricing
+    scanCost = Math.max(sqft * SQFT_RATE, SQFT_MIN);
+    lines.push({ label: `On-site scanning (${sqft.toLocaleString()} sq ft × $0.12)`, cost: scanCost });
+    indicator.className = 'calc-rate-indicator sqft';
+    indicator.innerHTML = `<strong>Square footage rate applies</strong> — Spaces ${SQFT_THRESHOLD.toLocaleString()} sq ft and above are charged at <strong>$0.12/sq ft</strong>.`;
+  }
+  total += scanCost;
+
+  // Deliverables
+  const deliverablePrices = { full: 450, matterpak: 200, pointcloud: 300, walkthrough: 100 };
+  const deliverableNames = { full: 'Full package', matterpak: 'Matterpak only', pointcloud: 'Point cloud only', walkthrough: '3D walkthrough link' };
+  lines.push({ label: deliverableNames[deliverable], cost: deliverablePrices[deliverable] });
+  total += deliverablePrices[deliverable];
+
+  // Add-ons
+  if (document.getElementById('hosting6').checked) {
+    lines.push({ label: 'Cloud hosting — 6 months', cost: 125 });
+    total += 125;
+  }
+  if (document.getElementById('hosting12').checked) {
+    lines.push({ label: 'Cloud hosting — 12 months', cost: 225 });
+    total += 225;
+  }
+  if (document.getElementById('bimCleanup').checked) {
+    const bimHrs = parseInt(document.getElementById('bimHours').value) || 0;
+    const bimCost = bimHrs * 100;
+    lines.push({ label: `Point cloud cleanup (${bimHrs} hr × $100)`, cost: bimCost });
+    total += bimCost;
+  }
+  if (document.getElementById('revitSetup').checked) {
+    lines.push({ label: 'Revit project setup', cost: 650, display: '$500–$800' });
+    total += 650;
+  }
+
+  // Render
+  const breakdown = document.getElementById('calcBreakdown');
+  breakdown.innerHTML = lines.map(l =>
+    `<div class="calc-line"><span>${l.label}</span><span>${l.display || '$' + l.cost.toLocaleString()}</span></div>`
+  ).join('');
+
+  document.getElementById('calcTotal').textContent = '$' + total.toLocaleString();
+}
+
+// Initial calculation
+calculate();
 </script>
 </body>
 </html>
